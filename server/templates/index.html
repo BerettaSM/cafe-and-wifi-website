@@ -1,0 +1,117 @@
+{% extends 'base.html' %}
+
+{% block title %}Home - Cafe and Wifi Website{% endblock %}
+
+{% block content %}
+
+    {% if pagination %}
+
+        <div class="d-flex justify-content-between align-items-center mb-3">
+
+            <h1>Cafes</h1>
+
+            <div class="d-inline">
+                <span class="badge rounded-pill text-bg-secondary fs-6">
+                    {{ pagination.first }} - {{ pagination.last }} of {{ pagination.total }}
+                </span>
+            </div>
+
+        </div>
+
+        <div class="cards cafes row w-100 m-0 justify-content-between">
+
+            {% for cafe in pagination.items %}
+
+                <div class="col-12 col-md-6 col-lg-4 col-xxl-3 mb-4">
+
+                    <div class="card w-100">
+
+                        <img src="{{ cafe.img_url }}" class="card-img-top" alt="Interior of {{ cafe.name }}.">
+
+                        <div class="card-body card-header">
+                            <h5 class="card-title">{{ cafe.name }}</h5>
+                            <p class="card-text">{{ cafe.location }}</p>
+                        </div>
+
+                        <ul class="list-group list-group-flush">
+
+                            {% for text, check in (('Has sockets', cafe.has_sockets),
+                                                   ('Has toilet', cafe.has_toilet),
+                                                   ('Has wifi', cafe.has_wifi),
+                                                   ('Can take calls', cafe.can_take_calls)) %}
+
+                                <li class="list-group-item">
+                                    {{ text }}: {{ '✔' if check else '❌' }}
+                                </li>
+
+                            {% endfor %}
+
+                        </ul>
+
+                        <div class="card-body">
+                            <a href="#" class="card-link">View</a>
+                        </div>
+
+                    </div>
+
+                </div>
+
+            {% endfor %}
+
+            <nav>
+                <ul class="pagination pagination-lg justify-content-center">
+
+                    <li class="page-item {{ '' if pagination.has_prev else 'disabled' }}">
+                        <a
+                            class="page-link"
+                            href="{{ url_for('views.home', page=pagination.prev_num) if pagination.has_prev else '#' }}"
+                        >Previous</a>
+                    </li>
+
+                    {% for number in pagination.iter_pages() %}
+
+                        {% if number %}
+
+                            {% if number != pagination.page %}
+
+                                <li class="page-item">
+                                    <a
+                                        class="page-link"
+                                        href="{{ url_for('views.home', page=number) }}"
+                                    >{{ number }}</a>
+                                </li>
+
+                            {% else %}
+
+                                <li class="page-item disabled">
+                                    <span class="page-link">{{ number }}</span>
+                                </li>
+
+                            {% endif %}
+
+                        {% else %}
+
+                            <li class="page-item disabled">
+                                <span class="page-link ellipsis">...</span>
+                            </li>
+
+                        {% endif %}
+
+                    {% endfor %}
+
+                    <li class="page-item {{ '' if pagination.has_next else 'disabled' }}">
+                        <a
+                            class="page-link"
+                            href="{{ url_for('views.home', page=pagination.next_num) if pagination.has_next else '#' }}"
+                        >Next</a>
+                    </li>
+
+                </ul>
+
+            </nav>
+
+        </div>
+
+    {% endif %}
+
+{% endblock %}
