@@ -1,0 +1,108 @@
+{% extends 'base.html' %}
+
+{% block title %}
+
+    Register New Cafe - Cafe and Wifi
+
+{% endblock %}
+
+{% block content %}
+
+    <form
+        method="POST"
+        action="{{ url_for('views.create_cafe') }}"
+        class="col-12 col-lg-6 mx-auto mt-5 rounded-3 shadow-lg p-4"
+        id="form"
+        novalidate
+    >
+
+        {{ form.csrf_token }}
+
+        {% macro create_input(form_item, placeholder) %}
+            {{
+                form_item(class_="form-control" + (' is-invalid' if form_item.errors else ''),
+                placeholder=placeholder)
+            }}
+        {% endmacro %}
+
+        {% macro create_error_span(form_item) %}
+            {% if form_item.errors %}
+                <div class="mb-3 text-end text-danger" id="{{ form_item.id }}-error">
+                    * {{ form_item.errors[0] }}
+                </div>
+            {% endif %}
+        {% endmacro %}
+
+        <div class="input-group mb-3">
+            <label class="input-group-text" for="name">{{ form.name.label }}</label>
+            {{ create_input(form_item=form.name, placeholder="Enter cafe name") }}
+        </div>
+
+        {{ create_error_span(form.name) }}
+
+        <div class="input-group mb-3">
+            <label class="input-group-text" for="location">{{ form.location.label }}</label>
+            {{ create_input(form_item=form.location, placeholder="Enter cafe location") }}
+        </div>
+
+        {{ create_error_span(form.location) }}
+
+        <div class="input-group mb-3">
+            <label class="input-group-text" for="img_url">{{ form.img_url.label }}</label>
+            {{ create_input(form_item=form.img_url, placeholder="https://lh3.googleusercontent.com/p/...") }}
+        </div>
+
+        {{ create_error_span(form.img_url) }}
+
+        <div class="input-group mb-3">
+            <label class="input-group-text" for="map_url">{{ form.map_url.label }}</label>
+            {{ create_input(form_item=form.map_url, placeholder="https://goo.gl/maps/...") }}
+        </div>
+
+        {{ create_error_span(form.map_url) }}
+
+        <div class="input-group mb-3">
+            <label class="input-group-text" for="coffee_price">{{ form.coffee_price.label }}</label>
+            {{ create_input(form_item=form.coffee_price, placeholder="Coffee Price") }}
+        </div>
+
+        {{ create_error_span(form.coffee_price) }}
+
+        <div class="input-group mb-3">
+            <label class="input-group-text" for="seats">{{ form.seats.label }}</label>
+            {{ form.seats(class_="form-select") }}
+        </div>
+
+        {% for option in (form.has_sockets, form.has_toilet, form.has_wifi, form.can_take_calls) %}
+
+            <div class="mb-3 d-flex align-items-center justify-content-between">
+
+                <span class="fs-5">{{ option.label }}</span>
+
+                <div class="btn-group btn-group-lg" role="group">
+
+                    {% for subfield in option %}
+
+                        {{ subfield(class_="btn-check", checked=not subfield.data) }}
+
+                        {{ subfield.label(class_='btn btn-outline-' + ('success' if subfield.data else 'danger')) }}
+
+                    {% endfor %}
+
+                </div>
+
+            </div>
+
+        {% endfor %}
+
+        <div class="d-grid pt-3">
+
+            {{ form.submit(class_="btn btn-success btn-lg") }}
+
+        </div>
+
+    </form>
+
+    <script src="{{ url_for('static', filename='js/form-script.js') }}"></script>
+
+{% endblock %}

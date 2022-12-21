@@ -1,4 +1,7 @@
+from __future__ import annotations
+
 from . import db
+from .forms import CafeForm
 
 
 class Cafe(db.Model):
@@ -13,3 +16,18 @@ class Cafe(db.Model):
     can_take_calls = db.Column(db.Boolean, default=False)
     seats = db.Column(db.String(10))
     coffee_price = db.Column(db.String(10))
+
+    @staticmethod
+    def create_from(form: CafeForm) -> Cafe:
+        return Cafe(
+            name=form.name.data,
+            map_url=form.map_url.data,
+            img_url=form.img_url.data,
+            location=form.location.data,
+            has_sockets=form.has_sockets.data == 'Yes',
+            has_toilet=form.has_toilet.data == 'Yes',
+            has_wifi=form.has_wifi.data == 'Yes',
+            can_take_calls=form.can_take_calls.data == 'Yes',
+            seats=form.seats.data,
+            coffee_price=form.coffee_price.data
+        )

@@ -1,15 +1,34 @@
-from wtforms import Form, StringField, SubmitField, URLField, BooleanField
+import re
+
+from flask_wtf import FlaskForm
+from wtforms import StringField, URLField, SubmitField, SelectField, RadioField
+from wtforms.validators import DataRequired, URL, Regexp
+
+# ---- Regex ----
+value_regex = re.compile(r'^£\d+\.\d{2}$')
+# -- Validator --
+not_null = DataRequired(message='Cannot be empty.')
+valid_url = URL(message='Must be a valid URL.')
+formatted_price = Regexp(regex=value_regex, message='Must be properly formatted. e.g.: £2.80')
+# ---------------
 
 
-class CafeForm(Form):
-    name = StringField('Name:')
-    map_url = URLField('Map URL:')
-    img_url = URLField('Image URL:')
-    location = StringField('Location: ')
-    has_sockets = BooleanField('Has sockets:')
-    has_toilet = BooleanField('Has toilet:')
-    has_wifi = BooleanField('Has wifi:')
-    can_take_calls = BooleanField('Can take calls:')
-    seats = StringField('Seats:')
-    coffee_price = StringField('Coffee price:')
+class CafeForm(FlaskForm):
+    name = StringField('Name', validators=[not_null])
+    location = StringField('Location', validators=[not_null])
+    img_url = URLField('Image URL', validators=[not_null, valid_url])
+    map_url = URLField('Map URL', validators=[not_null, valid_url])
+    coffee_price = StringField('Coffee price', validators=[not_null, formatted_price])
+    seats = SelectField('Seats', choices=[
+        ('0-10', '0-10 seats'),
+        ('10-20', '10-20 seats'),
+        ('20-30', '20-30 seats'),
+        ('30-40', '30-40 seats'),
+        ('40-50', '40-50 seats'),
+        ('50+', '50+ seats'),
+    ], validators=[not_null])
+    has_sockets = RadioField('Has sockets', choices=[(True, 'Yes'), (False, 'No')])
+    has_toilet = RadioField('Has toilet', choices=[(True, 'Yes'), (False, 'No')])
+    has_wifi = RadioField('Has wifi', choices=[(True, 'Yes'), (False, 'No')])
+    can_take_calls = RadioField('Can take calls', choices=[(True, 'Yes'), (False, 'No')])
     submit = SubmitField('Submit')
