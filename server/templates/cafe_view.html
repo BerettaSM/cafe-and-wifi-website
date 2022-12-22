@@ -20,23 +20,28 @@
 
         <div class="col-12 col-lg-6 mx-auto mt-5 shadow-lg">
 
-            <div class="cafe-header d-flex justify-content-between rounded ">
+            <div class="cafe-header d-flex justify-content-between rounded">
 
                 <div class="text-bg-dark w-100 rounded-start">
                     <h1 class="fs-3">{{ cafe.name }}</h1>
                     <p class="fs-5">{{ cafe.location }}</p>
                 </div>
 
-                <button type="button" class="btn btn-secondary">Edit</button>
+                <a href="{{ url_for('views.delete_cafe', cafe_id=cafe.id) }}">
+                    <button type="button" class="btn btn-danger del-button h-100 p-0" id="del-button">Delete</button>
+                </a>
 
+                <a href="{{ url_for('views.edit_cafe', cafe_id=cafe.id) }}">
+                    <button type="button" class="btn btn-secondary edit-button h-100 p-0">Edit</button>
+                </a>
             </div>
 
-            <main class="d-flex flex-row align-items-center p-5">
+            <main class="d-flex flex-row align-items-center cafe-info p-5">
 
                 <div class="me-4">
 
                     <a href="{{ cafe.map_url }}" target="_blank">
-                        <button type="button" class="btn btn-lg btn-outline-secondary text-nowrap">View on map</button>
+                        <button type="button" class="btn btn-lg btn-outline-dark text-nowrap">View on Map</button>
                     </a>
 
                 </div>
@@ -76,5 +81,7 @@
         </div>
 
     {% endif %}
+
+    <script src="{{ url_for('static', filename='js/cafe-view-script.js') }}"></script>
 
 {% endblock %}

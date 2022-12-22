@@ -1,3 +1,8 @@
+.btn
+{
+    transition: all .7s;
+}
+
 .cafe-header .text-bg-dark
 {
     opacity: 0.8;
@@ -10,9 +15,19 @@
     opacity: 0;
 }
 
-.cafe-header button
+.cafe-header .del-button
+{
+    border-radius: 0;
+}
+
+.cafe-header .edit-button
 {
     border-radius: 0 6px 6px 0;
+}
+
+.cafe-header button
+{
+    width: 4rem;
 }
 
 .card-header
@@ -32,6 +47,11 @@
     padding-top: 75px;
 }
 
+.page-navigation-button
+{
+    width: 7rem;
+}
+
 .side-img
 {
     height: 100%;
@@ -41,4 +61,28 @@
 .table td
 {
     text-align: end;
+}
+
+@media only screen and (max-width: 576px)
+{
+    .cafe-info
+    {
+        padding: 1rem !important;
+    }
+}
+
+@media only screen and (max-width: 768px)
+{
+    /*
+        Disables pagination's inner numbers on small screen devices.
+    */
+    .page-item-inner
+    {
+        display: none;
+    }
+
+    .card-img-top
+    {
+        height: 20vh;
+    }
 }

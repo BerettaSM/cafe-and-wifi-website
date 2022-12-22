@@ -24,10 +24,31 @@ def view_cafe(cafe_id):
 
 @views.route('/cafe', methods=('GET', 'POST'))
 def create_cafe():
-    form = CafeForm()
+    # Returning a form with radio defaults interferes with front-end js validation,
+    # So we must use a normal form for POST requests.
+    form = CafeForm() if request.method == 'POST' else CafeForm.with_radio_defaults()
     if form.validate_on_submit():
         cafe = Cafe.create_from(form)
         db.session.add(cafe)
         db.session.commit()
-        return redirect(url_for('views.home'))
+        return redirect(url_for('views.view_cafe', cafe_id=cafe.id))
     return render_template('cafe_edit.html', form=form)
+
+
+@views.route('/edit-cafe/<int:cafe_id>', methods=('GET', 'POST'))
+def edit_cafe(cafe_id):
+    cafe = Cafe.query.get(cafe_id)
+    form = CafeForm.populated_from(cafe)
+    if form.validate_on_submit():
+        cafe.update_from(form)
+        db.session.commit()
+        return redirect(url_for('views.view_cafe', cafe_id=cafe.id))
+    return render_template('cafe_edit.html', form=form)
+
+
+@views.route('/delete-cafe/<int:cafe_id>', methods=('GET',))
+def delete_cafe(cafe_id):
+    cafe_to_delete = Cafe.query.get(cafe_id)
+    db.session.delete(cafe_to_delete)
+    db.session.commit()
+    return redirect(url_for('views.home'))

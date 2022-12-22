@@ -13,12 +13,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
             /*
                 Validation is performed server side.
-                This is meant to just clear the "invalid" inputs
+
+                This is meant to clear the "invalid" input outlines
                 when the user changes the values.
             */
 
             e.target.classList.remove('is-invalid');
 
+            /*
+                This is meant to remove the divs that contain
+                error messages.
+            */
             document.getElementById(`${e.target.id}-error`).remove();
 
         });

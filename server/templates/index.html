@@ -11,7 +11,7 @@
             <h1>Cafes</h1>
 
             <div class="d-inline">
-                <span class="badge rounded-pill text-bg-secondary fs-6">
+                <span class="badge rounded-pill text-bg-dark fs-6">
                     {{ pagination.first }} - {{ pagination.last }} of {{ pagination.total }}
                 </span>
             </div>
@@ -53,7 +53,7 @@
                                 href="{{ url_for('views.view_cafe', cafe_id=cafe.id) }}"
                                 class="card-link"
                             >
-                                <button type="button" class="btn btn-lg btn-outline-secondary text-nowrap w-100">View</button>
+                                <button type="button" class="btn btn-lg btn-outline-dark text-nowrap w-100">View</button>
                             </a>
                         </div>
 
@@ -63,10 +63,11 @@
 
             {% endfor %}
 
-            <nav>
+            <nav class="row w-100 m-0">
+
                 <ul class="pagination pagination-lg justify-content-center">
 
-                    <li class="page-item {{ '' if pagination.has_prev else 'disabled' }}">
+                    <li class="page-item page-navigation-button {{ '' if pagination.has_prev else 'disabled' }}">
                         <a
                             class="page-link"
                             href="{{ url_for('views.home', page=pagination.prev_num) if pagination.has_prev else '#' }}"
@@ -79,7 +80,7 @@
 
                             {% if number != pagination.page %}
 
-                                <li class="page-item">
+                                <li class="page-item page-item-inner">
                                     <a
                                         class="page-link"
                                         href="{{ url_for('views.home', page=number) }}"
@@ -88,7 +89,7 @@
 
                             {% else %}
 
-                                <li class="page-item disabled">
+                                <li class="page-item page-item-inner disabled">
                                     <span class="page-link">{{ number }}</span>
                                 </li>
 
@@ -96,7 +97,7 @@
 
                         {% else %}
 
-                            <li class="page-item disabled">
+                            <li class="page-item page-item-inner disabled">
                                 <span class="page-link ellipsis">...</span>
                             </li>
 
@@ -104,7 +105,7 @@
 
                     {% endfor %}
 
-                    <li class="page-item {{ '' if pagination.has_next else 'disabled' }}">
+                    <li class="page-item page-navigation-button {{ '' if pagination.has_next else 'disabled' }}">
                         <a
                             class="page-link"
                             href="{{ url_for('views.home', page=pagination.next_num) if pagination.has_next else '#' }}"
