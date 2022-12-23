@@ -32,7 +32,7 @@ def create_cafe():
         db.session.add(cafe)
         db.session.commit()
         return redirect(url_for('views.view_cafe', cafe_id=cafe.id))
-    return render_template('cafe_edit.html', form=form)
+    return render_template('cafe_form.html', form=form)
 
 
 @views.route('/edit-cafe/<int:cafe_id>', methods=('GET', 'POST'))
@@ -43,7 +43,7 @@ def edit_cafe(cafe_id):
         cafe.update_from(form)
         db.session.commit()
         return redirect(url_for('views.view_cafe', cafe_id=cafe.id))
-    return render_template('cafe_edit.html', form=form)
+    return render_template('cafe_form.html', form=form)
 
 
 @views.route('/delete-cafe/<int:cafe_id>', methods=('GET',))

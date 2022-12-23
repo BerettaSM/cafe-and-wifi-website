@@ -63,6 +63,11 @@
     text-align: end;
 }
 
+#message-modal-body li
+{
+    list-style: none;
+}
+
 @media only screen and (max-width: 576px)
 {
     .cafe-info

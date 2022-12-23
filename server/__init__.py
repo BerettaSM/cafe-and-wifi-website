@@ -3,6 +3,9 @@ from secrets import token_hex
 
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager
+
+from .utils import insert_dummy_data
 
 
 db = SQLAlchemy()
@@ -15,7 +18,7 @@ def create_app():
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
     db.init_app(app)
 
-    from .models import Cafe
+    from .models import Cafe, User
     create_database(app)
 
     from .views import views
@@ -24,6 +27,13 @@ def create_app():
     from .auth import auth
     app.register_blueprint(auth, url_prefix='/')
 
+    login_manager = LoginManager()
+    login_manager.init_app(app)
+
+    @login_manager.user_loader
+    def load_user(user_id):
+        return User.query.get(user_id)
+
     return app
 
 
@@ -31,29 +41,5 @@ def create_database(app):
     if not path.exists(path.join('instance', DB_NAME)):
         with app.app_context():
             db.create_all()
-            insert_dummy_data()
+            insert_dummy_data(db)
         print('Database created!')
-
-
-def insert_dummy_data():
-    import csv
-    from .models import Cafe
-    with open('entries.csv', encoding='UTF-8', newline='') as file:
-        reader = csv.DictReader(file)
-        dummy_entries = [
-            Cafe(
-                name=row['name'],
-                map_url=row['map_url'],
-                img_url=row['img_url'],
-                location=row['location'],
-                has_sockets=row['has_sockets'] == 'True',
-                has_toilet=row['has_toilet'] == 'True',
-                has_wifi=row['has_wifi'] == 'True',
-                can_take_calls=row['can_take_calls'] == 'True',
-                seats=row['seats'],
-                coffee_price=row['coffee_price']
-            )
-            for row in reader
-        ]
-    db.session.bulk_save_objects(dummy_entries)
-    db.session.commit()

@@ -37,18 +37,18 @@
             <div class="container-fluid">
 
                 <a class="navbar-brand" href="{{ url_for('views.home') }}">
-                    Cafe and Wifi
+                    Cafe & Wifi
                 </a>
 
-                <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
+                <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas-navbar" aria-controls="offcanvas-navbar">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-                <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvasNavbar" aria-labelledby="offcanvasNavbarLabel">
+                <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvas-navbar" aria-labelledby="offcanvas-navbar-label">
 
                     <div class="offcanvas-header">
-                        <h5 class="offcanvas-title" id="offcanvasNavbarLabel">
-                            Options
+                        <h5 class="offcanvas-title" id="offcanvas-navbar-label">
+                            Menu
                         </h5>
                         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                     </div>
@@ -56,9 +56,23 @@
                     <div class="offcanvas-body">
 
                         <div class="d-grid mt-3">
-                            <a href="#">
-                                <button class="btn btn-outline-dark w-100">Login</button>
-                            </a>
+                            {% if current_user.is_authenticated %}
+                                <h3>Welcome, {{ current_user.first_name }} {{ current_user.last_name }}</h3>
+                                <a href="{{ url_for('auth.logout') }}">
+                                    <button
+                                        class="btn btn-outline-dark w-100"
+                                        id="logout-button"
+                                    >Logout</button>
+                                </a>
+                            {% else %}
+                                <button
+                                    class="btn btn-outline-dark w-100"
+                                    id="login-button"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#login-modal"
+                                >Login</button>
+                            {% endif %}
+
                         </div>
 
                         <ul class="navbar-nav justify-content-end flex-grow-1 pe-3">
@@ -117,6 +131,35 @@
         {% block content %}
         {% endblock %}
     </main>
+
+    {% if not current_user.is_authenticated %}
+
+        {% include 'modal_login.html' %}
+
+    {% endif %}
+
+    {% include 'modal_messages.html' %}
+
+    {% with messages = get_flashed_messages() %}
+
+        <span id="server-messages">
+
+            {% if messages %}
+
+                {{ messages }}
+
+            {% endif %}
+
+        </span>
+
+    {% endwith %}
+
+    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+
+    <script type="module">
+        import { showMessages } from '{{ url_for('static', filename='js/lib.js') }}';
+        showMessages();
+    </script>
 
 </body>
 </html>
