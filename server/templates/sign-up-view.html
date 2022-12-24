@@ -1,0 +1,62 @@
+{% extends 'base.html' %}
+
+{% block title %}Sign Up - Cafe & Wifi{% endblock %}
+
+{% macro create_input(form_item, placeholder) %}
+    {{
+        form_item(class_="form-control" + (' is-invalid' if form_item.errors else ''),
+        placeholder=placeholder)
+    }}
+{% endmacro %}
+
+{% macro create_error_message(form_item) %}
+    {% if form_item.errors %}
+        <div class="mb-3 text-end text-danger error-message" id="{{ form_item.id }}-error">
+            * {{ form_item.errors[0] }}
+        </div>
+    {% endif %}
+{% endmacro %}
+
+{% block content %}
+
+    <form action="{{ url_for('views.sign_up') }}" method="POST" class="col-12 col-lg-6 mx-auto mt-5 rounded-3 shadow-lg p-4" novalidate>
+
+        {{ form.csrf_token }}
+
+        <div class="input-group mb-3">
+            <label class="input-group-text" for="signup_email">{{ form.signup_email.label }}</label>
+            {{ create_input(form.signup_email, placeholder='user@user.com') }}
+        </div>
+
+        {{ create_error_message(form.signup_email) }}
+
+        <div class="input-group mb-3">
+            <label class="input-group-text" for="signup_username">{{ form.signup_username.label }}</label>
+            {{ create_input(form.signup_username, placeholder='John Doe') }}
+        </div>
+
+        {{ create_error_message(form.signup_username) }}
+
+        <div class="input-group mb-3">
+            <label class="input-group-text" for="signup_password">{{ form.signup_password.label }}</label>
+            {{ create_input(form.signup_password, placeholder='Enter password') }}
+        </div>
+
+        {{ create_error_message(form.signup_password) }}
+
+        <div class="input-group mb-3">
+            <label class="input-group-text" for="signup_confirm">{{ form.signup_confirm.label }}</label>
+            {{ create_input(form.signup_confirm, placeholder='Repeat password') }}
+        </div>
+
+        {{ create_error_message(form.signup_confirm) }}
+
+        <div class="d-grid pt-3">
+
+            {{ form.submit(class_="btn btn-success btn-lg") }}
+
+        </div>
+
+    </form>
+
+{% endblock %}

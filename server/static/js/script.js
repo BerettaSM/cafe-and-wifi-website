@@ -1,6 +1,16 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    const formValidationFieldIds = ['name', 'location','img_url', 'map_url', 'coffee_price'];
+    const formValidationFieldIds = [
+        'name',
+        'location',
+        'img_url',
+        'map_url',
+        'coffee_price',
+        'signup_email',
+        'signup_username',
+        'signup_password',
+        'signup_confirm'
+        ];
 
     formValidationFieldIds.forEach(fieldId => {
 

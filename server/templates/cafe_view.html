@@ -18,22 +18,34 @@
 
     {% if cafe %}
 
-        <div class="col-12 col-lg-6 mx-auto mt-5 shadow-lg">
+        <div class="col-12 col-lg-9 mx-auto my-5 pb-3 rounded shadow-lg">
 
             <div class="cafe-header d-flex justify-content-between rounded">
 
-                <div class="text-bg-dark w-100 rounded-start">
-                    <h1 class="fs-3">{{ cafe.name }}</h1>
-                    <p class="fs-5">{{ cafe.location }}</p>
-                </div>
+                {% if current_user.is_authenticated and current_user.has_admin_privileges %}
 
-                <a href="{{ url_for('views.delete_cafe', cafe_id=cafe.id) }}">
-                    <button type="button" class="btn btn-danger del-button h-100 p-0" id="del-button">Delete</button>
-                </a>
+                    <div class="text-bg-dark w-100 rounded-start">
+                        <h1 class="fs-3">{{ cafe.name }}</h1>
+                        <p class="fs-5">{{ cafe.location }}</p>
+                    </div>
 
-                <a href="{{ url_for('views.edit_cafe', cafe_id=cafe.id) }}">
-                    <button type="button" class="btn btn-secondary edit-button h-100 p-0">Edit</button>
-                </a>
+                    <a href="{{ url_for('views.delete_cafe', cafe_id=cafe.id) }}">
+                        <button type="button" class="btn btn-danger del-button h-100 p-0" id="del-button">Delete</button>
+                    </a>
+
+                    <a href="{{ url_for('views.edit_cafe', cafe_id=cafe.id) }}">
+                        <button type="button" class="btn btn-secondary edit-button h-100 p-0">Edit</button>
+                    </a>
+
+                {% else %}
+
+                    <div class="text-bg-dark w-100 rounded">
+                        <h1 class="fs-3">{{ cafe.name }}</h1>
+                        <p class="fs-5">{{ cafe.location }}</p>
+                    </div>
+
+                {% endif %}
+
             </div>
 
             <main class="d-flex flex-row align-items-center cafe-info p-5">
@@ -77,6 +89,93 @@
                 </table>
 
             </main>
+
+            <div id="comment-section" class="m-2 col-11 col-lg-8 mx-auto">
+
+                {% if current_user.is_authenticated %}
+
+                    <form action="{{ url_for('comments.add_comment', cafe_id=cafe.id) }}" method="POST">
+
+                        {{ form.csrf_token }}
+
+                        <div class="input-group mb-3">
+                            {{ form.text(class_="form-control", placeholder=placeholder) }}
+                            {{ form.send(class_='input-group-text') }}
+                        </div>
+
+                    </form>
+
+                {% else %}
+
+                    <div class="text-center mb-3">
+
+                        <p>
+                            You need to be logged in to comment.
+                        </p>
+
+                        <p>
+                            You can
+                            <a
+                                href="#"
+                                data-bs-toggle="modal"
+                                data-bs-target="#login-modal"
+                            >log in here</a>.
+                        </p>
+
+                        <p>
+                            Or, you can
+                            <a href="{{ url_for('views.sign_up') }}">sign up here</a>.
+                        </p>
+
+                    </div>
+
+                {% endif %}
+
+                {% if cafe.comments %}
+
+                        <div id="comments">
+
+                    {% for comment in cafe.comments %}
+
+                            <div class="comment card mb-3">
+
+                                <div class="row g-0">
+
+                                    <div class="col-md-2 d-grid justify-content-center align-items-center p-1">
+                                        <img
+                                            src="{{ comment.comment_author.email | gravatar }}"
+                                            class="img-thumbnail rounded "
+                                            alt="An avatar of user {{ comment.comment_author.username }}."
+                                        >
+                                    </div>
+
+                                    <div class="col-md-10">
+
+                                        <div class="card-body">
+
+                                            <h5 class="card-title">
+                                                {{ comment.comment_author.username }} <small class="text-muted">{{ comment.timestamp_create }}</small>
+                                            </h5>
+
+                                            <p class="card-text">
+                                                {{ comment.text }}
+                                            </p>
+
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+                    {% endfor %}
+
+                    </div>
+
+                {% endif %}
+
+            </div>
 
         </div>
 

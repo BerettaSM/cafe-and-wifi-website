@@ -3,19 +3,44 @@ from __future__ import annotations
 import re
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, URLField, SubmitField, SelectField, RadioField, HiddenField
-from wtforms.validators import DataRequired, URL, Regexp
+from wtforms import EmailField, HiddenField, PasswordField, RadioField
+from wtforms import SelectField, StringField, SubmitField, TextAreaField, URLField
+from wtforms.validators import URL, Regexp, Email, Length, EqualTo, DataRequired
+
+from .custom_validators import UniqueUserEmail, UniqueUsername
 
 # ---- Regex ----
+multiple_spaces_regex = re.compile(r'\s{2,}')
 value_regex = re.compile(r'^£\d+\.\d{2}$')
 # -- Validator --
 not_null = DataRequired(message='Cannot be empty.')
 valid_url = URL(message='Must be a valid URL.')
+valid_email = Email(message='Must be a valid email.')
+unique_email = UniqueUserEmail(message='This email is already registered.')
+unique_username = UniqueUsername(message='This username is already registered.')
+valid_username_length = Length(min=4, message='Must have a minimum length of 4 characters.')
+valid_password_length = Length(min=8, message='Must have a minimum length of 8 characters.')
 formatted_price = Regexp(regex=value_regex, message='Must be properly formatted. e.g.: £2.80')
 # ---------------
 
 
-class CafeForm(FlaskForm):
+def my_strip_filter(value):
+    """This filter strips whitespaces and transforms
+    chains of multiple whitespaces into a single whitespace."""
+    if value is not None and hasattr(value, 'strip'):
+        return multiple_spaces_regex.sub(' ', value.strip())
+    return value
+
+
+class BaseForm(FlaskForm):
+    class Meta:
+        def bind_field(self, form, unbound_field, options):
+            filters = unbound_field.kwargs.get('filters', [])
+            filters.append(my_strip_filter)
+            return unbound_field.bind(form=form, filters=filters, **options)
+
+
+class CafeForm(BaseForm):
     id = HiddenField()
     name = StringField('Name', validators=[not_null])
     location = StringField('Location', validators=[not_null])
@@ -61,3 +86,20 @@ class CafeForm(FlaskForm):
             has_wifi=cafe.has_wifi,
             can_take_calls=cafe.can_take_calls
         )
+
+
+class UserForm(BaseForm):
+    signup_email = EmailField('Email', validators=[not_null, valid_email, unique_email])
+    signup_username = StringField('Username', validators=[not_null, valid_username_length, unique_username])
+    signup_password = PasswordField('New Password', validators=[
+        not_null, valid_password_length, EqualTo('signup_confirm', message='Passwords must match!')
+    ])
+    signup_confirm = PasswordField('Repeat password', validators=[
+        not_null, valid_password_length, EqualTo('signup_password', message='Passwords must match!')
+    ])
+    submit = SubmitField('Sign-Up')
+
+
+class CommentForm(BaseForm):
+    text = TextAreaField('Leave a comment', validators=[not_null])
+    send = SubmitField('Send')

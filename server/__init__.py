@@ -4,6 +4,7 @@ from secrets import token_hex
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager
+from flask_gravatar import Gravatar
 
 from .utils import insert_dummy_data
 
@@ -18,11 +19,14 @@ def create_app():
     app.config['SQLALCHEMY_DATABASE_URI'] = f'sqlite:///{DB_NAME}'
     db.init_app(app)
 
-    from .models import Cafe, User
+    from .models import Cafe, User, Comment
     create_database(app)
 
     from .views import views
     app.register_blueprint(views, url_prefix='/')
+
+    from .comments import comments
+    app.register_blueprint(comments, url_prefix='/')
 
     from .auth import auth
     app.register_blueprint(auth, url_prefix='/')
@@ -33,6 +37,15 @@ def create_app():
     @login_manager.user_loader
     def load_user(user_id):
         return User.query.get(user_id)
+
+    Gravatar(app,
+             size=50,
+             rating='g',
+             default='mp',
+             force_default=False,
+             use_ssl=False,
+             base_url=None
+             )
 
     return app
 
