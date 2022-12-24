@@ -6,6 +6,18 @@
 
 {% endblock %}
 
+{% block scripts_and_links %}
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+        integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"
+    />
+
+{% endblock %}
+
 {% block style %}
     .cafe-header
     {
@@ -79,7 +91,13 @@
 
                             <tr>
                                 <th scope="row">{{ text }}</th>
-                                <td>{{ '✔' if check else '❌' }}</td>
+                                <td>
+                                    {% if check %}
+                                        <span class="fa-solid fa-check text-success"></span>
+                                    {% else %}
+                                        <span class="fa-solid fa-ban text-danger"></span>
+                                    {% endif %}
+                                </td>
                             </tr>
 
                         {% endfor %}
@@ -137,11 +155,15 @@
 
                     {% for comment in cafe.comments %}
 
-                            <div class="comment card mb-3">
+                            <div class="comment position-relative card mb-3">
 
-                                <div class="row g-0">
+                                <div class="timestamp d-none">
+                                    {{ comment.timestamp_create }}
+                                </div>
 
-                                    <div class="col-md-2 d-grid justify-content-center align-items-center p-1">
+                                <div class="d-flex flex-row g-0">
+
+                                    <div class="col-3 col-md-2 d-grid justify-content-center align-items-start p-3">
                                         <img
                                             src="{{ comment.comment_author.email | gravatar }}"
                                             class="img-thumbnail rounded "
@@ -149,12 +171,16 @@
                                         >
                                     </div>
 
-                                    <div class="col-md-10">
+                                    <div class="col-9 col-md-10">
 
                                         <div class="card-body">
 
                                             <h5 class="card-title">
-                                                {{ comment.comment_author.username }} <small class="text-muted">{{ comment.timestamp_create }}</small>
+                                                {{ comment.comment_author.username }}
+                                                <small class="text-muted elapsed-time">
+                                                    {{ comment.timestamp_create }}
+                                                </small>
+
                                             </h5>
 
                                             <p class="card-text">
@@ -167,6 +193,14 @@
 
                                 </div>
 
+                                {% if current_user.is_authenticated and current_user.id == comment.author_id %}
+                                    <a
+                                        class="position-absolute top-0 end-0 text-danger del-button del-icon"
+                                        href="{{ url_for('comments.delete_comment', comment_id=comment.id) }}"
+                                    >
+                                        <i class="fa-solid fa-trash"></i>
+                                    </a>
+                                {% endif %}
                             </div>
 
                     {% endfor %}

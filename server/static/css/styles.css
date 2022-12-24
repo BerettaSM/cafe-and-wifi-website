@@ -42,6 +42,11 @@
     object-fit: cover;
 }
 
+.del-icon
+{
+    transform: translate(-60%, 30%);
+}
+
 .main-content
 {
     padding-top: 75px;

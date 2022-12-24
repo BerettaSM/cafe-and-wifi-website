@@ -10,7 +10,7 @@ function parseMessagesFromServer(messages) {
     return result == '' ? [] : result.split(',').map(s => s.trim());
 }
 
-export function showMessages() {
+export function showServerMessages() {
 
     const title = 'Attention';
 
@@ -44,5 +44,39 @@ export function showMessages() {
     messageModalInstance.show();
 
     target.innerHTML = null;
+
+}
+
+export function convertTimestampToElapsedTime(timestampString){
+
+    /*
+        timestampString should be formatted as: "2022-12-24 12:48:53"
+    */
+
+    const timestamp = new Date(timestampString.trim());
+
+    const elapsedTime = new Date() - timestamp;
+
+    const results = [
+        [31536000, 'year', 'years'],
+        [2628288, 'month', 'months'],
+        [86400, 'day', 'days'],
+        [3600, 'hour', 'hours'],
+        [60, 'minute', 'minutes']
+    ].reduce((arr, [divisor, singular, plural]) => {
+
+        const result = Math.floor(elapsedTime / divisor / 1000);
+
+        if(result > 0) {
+
+            arr.push(`${result} ${result < 2 ? singular : plural} ago`)
+
+        }
+
+        return arr;
+
+    }, [])
+
+    return results.length === 0 ? 'Now' : results[0];
 
 }

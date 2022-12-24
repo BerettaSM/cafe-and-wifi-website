@@ -20,6 +20,7 @@ unique_email = UniqueUserEmail(message='This email is already registered.')
 unique_username = UniqueUsername(message='This username is already registered.')
 valid_username_length = Length(min=4, message='Must have a minimum length of 4 characters.')
 valid_password_length = Length(min=8, message='Must have a minimum length of 8 characters.')
+comment_text_length = Length(max=2000, message='Must have a maximum length of 2000 characters.')
 formatted_price = Regexp(regex=value_regex, message='Must be properly formatted. e.g.: £2.80')
 # ---------------
 
@@ -101,5 +102,5 @@ class UserForm(BaseForm):
 
 
 class CommentForm(BaseForm):
-    text = TextAreaField('Leave a comment', validators=[not_null])
+    text = TextAreaField('Leave a comment', validators=[not_null, comment_text_length])
     send = SubmitField('Send')

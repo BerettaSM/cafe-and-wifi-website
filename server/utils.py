@@ -1,5 +1,14 @@
 import sys
 import inspect
+import datetime
+
+
+def formatted_timestamp():
+    return datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+
+def to_bool(yes_no: str) -> bool:
+    return yes_no == 'True'
 
 
 def does_class_exist_in_models(cls):

@@ -7,10 +7,7 @@ from sqlalchemy.orm import relationship
 from werkzeug.security import generate_password_hash
 
 from . import db
-
-
-def to_bool(yes_no: str) -> bool:
-    return yes_no == 'True'
+from .utils import to_bool, formatted_timestamp
 
 
 class Cafe(db.Model):
@@ -80,8 +77,8 @@ class User(db.Model, UserMixin):
 class Comment(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     text = db.Column(db.Text, nullable=False)
-    timestamp_create = db.Column(db.DateTime(timezone=True), default=datetime.now)
-    timestamp_update = db.Column(db.DateTime(timezone=True), onupdate=datetime.now)
+    timestamp_create = db.Column(db.String(50), default=formatted_timestamp)
+    timestamp_update = db.Column(db.String(50), onupdate=formatted_timestamp)
     author_id = db.Column(db.Integer, db.ForeignKey("user.id"))
     comment_author = relationship("User", back_populates="comments")
     cafe_id = db.Column(db.Integer, db.ForeignKey("cafe.id"))

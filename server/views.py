@@ -4,7 +4,7 @@ from flask_login import login_user
 from . import db
 from .forms import CafeForm, UserForm, CommentForm
 from .models import Cafe, User, Comment
-from sqlalchemy import desc, asc
+from sqlalchemy import desc, asc, or_
 
 from .custom_decorators import admin_only, anonymous_only
 
@@ -15,8 +15,27 @@ views = Blueprint('views', __name__)
 @views.route('/', methods=('GET',))
 def home():
     page = request.args.get('page', 1, int)
-    pagination = db.paginate(db.select(Cafe).order_by(asc(Cafe.id)), page=page, per_page=12)
+    per_page = request.args.get('per_page', 12, int)
+    pagination = db.paginate(db.select(Cafe).order_by(asc(Cafe.id)), page=page, per_page=per_page )
     return render_template('index.html', pagination=pagination)
+
+
+@views.route('/search', methods=('GET',))
+def search_for():
+    page = request.args.get('page', 1, int)
+    per_page = request.args.get('per_page', 12, int)
+    search_term = request.args.get('search_term', '')
+    if search_term == '':
+        return redirect(url_for('views.home'))
+    pagination = db.paginate(
+        db.select(Cafe).filter(
+            or_(
+                Cafe.name.like('%' + search_term + '%'),
+                Cafe.location.like('%' + search_term + '%')
+            )
+        ).order_by(asc(Cafe.id)), page=page, per_page=per_page
+    )
+    return render_template('index.html', pagination=pagination, search_term=search_term)
 
 
 @views.route('/cafe-view/<int:cafe_id>', methods=('GET',))

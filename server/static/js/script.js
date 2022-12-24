@@ -1,3 +1,5 @@
+import { convertTimestampToElapsedTime } from './lib.js';
+
 document.addEventListener('DOMContentLoaded', () => {
 
     const formValidationFieldIds = [
@@ -10,7 +12,7 @@ document.addEventListener('DOMContentLoaded', () => {
         'signup_username',
         'signup_password',
         'signup_confirm'
-        ];
+    ];
 
     formValidationFieldIds.forEach(fieldId => {
 
@@ -60,19 +62,53 @@ document.addEventListener('DOMContentLoaded', () => {
 
     }
 
-    const deleteButton = document.getElementById('del-button');
+    const deleteButtons = document.querySelectorAll('.del-button');
 
-    if(deleteButton !== null) {
+    if(deleteButtons !== null) {
 
         /*
-            Confirmation button for delete cafe button.
+            Confirmation message for delete buttons.
         */
 
-        deleteButton.addEventListener('click', (e) => {
+        deleteButtons.forEach(button => {
 
-            if(!window.confirm('Are you sure you want to delete?')) e.preventDefault();
+            button.addEventListener('click', (e) => {
 
-        });
+                if(!window.confirm('Are you sure you want to delete?')) e.preventDefault();
+
+            });
+
+        })
+
+    }
+
+    const comments = document.querySelectorAll('div.comment');
+
+    if(comments !== null) {
+
+        function updateElapsedTime() {
+
+            comments.forEach(comment => {
+
+                const timestampString = comment.querySelector('div.timestamp').innerText;
+
+                const elapsedTime = convertTimestampToElapsedTime(timestampString);
+
+                const target = comment.querySelector('small.elapsed-time');
+
+                target.innerText = elapsedTime;
+
+            });
+
+        }
+
+        setInterval(() => {
+
+            updateElapsedTime();
+
+        }, 1000);
+
+        updateElapsedTime();
 
     }
 

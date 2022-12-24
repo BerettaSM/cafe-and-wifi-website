@@ -1,4 +1,4 @@
-from flask import Blueprint, url_for, redirect
+from flask import Blueprint, url_for, redirect, request
 from .forms import CommentForm
 from flask_login import current_user
 
@@ -25,3 +25,13 @@ def add_comment(cafe_id):
         db.session.commit()
     return redirect(url_for('views.view_cafe', cafe_id=cafe_id))
 
+
+@comments.route('/delete-comment/<int:comment_id>', methods=('GET',))
+@authenticated_only
+def delete_comment(comment_id):
+    comment_to_delete = Comment.query.get(comment_id)
+    current_view = request.environ['HTTP_REFERER']
+    if comment_to_delete.author_id == current_user.id:
+        db.session.delete(comment_to_delete)
+        db.session.commit()
+    return redirect(current_view)
