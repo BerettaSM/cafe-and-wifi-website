@@ -1,7 +1,5 @@
 from __future__ import annotations
 
-from datetime import datetime
-
 from flask_login import UserMixin
 from sqlalchemy.orm import relationship
 from werkzeug.security import generate_password_hash

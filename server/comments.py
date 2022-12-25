@@ -1,11 +1,10 @@
-from flask import Blueprint, url_for, redirect, request
-from .forms import CommentForm
+from flask import Blueprint, url_for, redirect, request, flash
 from flask_login import current_user
 
-from .custom_decorators import authenticated_only
-from .models import Comment
-
 from . import db
+from .custom_decorators import authenticated_only
+from .forms import CommentForm
+from .models import Comment
 
 
 comments = Blueprint('comments', __name__)
@@ -23,6 +22,8 @@ def add_comment(cafe_id):
         )
         db.session.add(new_comment)
         db.session.commit()
+    else:
+        flash('Your comment was not sent.', category='error')
     return redirect(url_for('views.view_cafe', cafe_id=cafe_id))
 
 
@@ -31,7 +32,7 @@ def add_comment(cafe_id):
 def delete_comment(comment_id):
     comment_to_delete = Comment.query.get(comment_id)
     current_view = request.environ['HTTP_REFERER']
-    if comment_to_delete.author_id == current_user.id:
+    if comment_to_delete.author_id == current_user.id or current_user.has_admin_privileges:
         db.session.delete(comment_to_delete)
         db.session.commit()
     return redirect(current_view)

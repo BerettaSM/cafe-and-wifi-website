@@ -24,28 +24,28 @@
         {{ form.csrf_token }}
 
         <div class="input-group mb-3">
-            <label class="input-group-text" for="signup_email">{{ form.signup_email.label }}</label>
+            <label class="d-block text-center input-group-text col-4 col-md-3" for="signup_email">{{ form.signup_email.label }}</label>
             {{ create_input(form.signup_email, placeholder='user@user.com') }}
         </div>
 
         {{ create_error_message(form.signup_email) }}
 
         <div class="input-group mb-3">
-            <label class="input-group-text" for="signup_username">{{ form.signup_username.label }}</label>
+            <label class="d-block text-center input-group-text col-4 col-md-3" for="signup_username">{{ form.signup_username.label }}</label>
             {{ create_input(form.signup_username, placeholder='John Doe') }}
         </div>
 
         {{ create_error_message(form.signup_username) }}
 
         <div class="input-group mb-3">
-            <label class="input-group-text" for="signup_password">{{ form.signup_password.label }}</label>
+            <label class="d-block text-center input-group-text col-4 col-md-3" for="signup_password">{{ form.signup_password.label }}</label>
             {{ create_input(form.signup_password, placeholder='Enter password') }}
         </div>
 
         {{ create_error_message(form.signup_password) }}
 
         <div class="input-group mb-3">
-            <label class="input-group-text" for="signup_confirm">{{ form.signup_confirm.label }}</label>
+            <label class="d-block text-center input-group-text col-4 col-md-3" for="signup_confirm">{{ form.signup_confirm.label }}</label>
             {{ create_input(form.signup_confirm, placeholder='Repeat password') }}
         </div>
 

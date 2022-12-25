@@ -2,12 +2,11 @@ from os import path
 from secrets import token_hex
 
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
-from flask_login import LoginManager
 from flask_gravatar import Gravatar
+from flask_login import LoginManager
+from flask_sqlalchemy import SQLAlchemy
 
 from .utils import insert_dummy_data
-
 
 db = SQLAlchemy()
 DB_NAME = 'cafes.db'

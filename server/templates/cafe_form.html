@@ -41,42 +41,42 @@
         {{ form.id }}
 
         <div class="input-group mb-3">
-            <label class="input-group-text" for="name">{{ form.name.label }}</label>
+            <label class="d-block text-center input-group-text col-3 col-md-2" for="name">{{ form.name.label }}</label>
             {{ create_input(form_item=form.name, placeholder="Enter cafe name") }}
         </div>
 
         {{ create_error_message(form.name) }}
 
         <div class="input-group mb-3">
-            <label class="input-group-text" for="location">{{ form.location.label }}</label>
+            <label class="d-block text-center input-group-text col-3 col-md-2" for="location">{{ form.location.label }}</label>
             {{ create_input(form_item=form.location, placeholder="Enter cafe location") }}
         </div>
 
         {{ create_error_message(form.location) }}
 
         <div class="input-group mb-3">
-            <label class="input-group-text" for="img_url">{{ form.img_url.label }}</label>
+            <label class="d-block text-center input-group-text col-3 col-md-2" for="img_url">{{ form.img_url.label }}</label>
             {{ create_input(form_item=form.img_url, placeholder="https://lh3.googleusercontent.com/p/...") }}
         </div>
 
         {{ create_error_message(form.img_url) }}
 
         <div class="input-group mb-3">
-            <label class="input-group-text" for="map_url">{{ form.map_url.label }}</label>
+            <label class="d-block text-center input-group-text col-3 col-md-2" for="map_url">{{ form.map_url.label }}</label>
             {{ create_input(form_item=form.map_url, placeholder="https://goo.gl/maps/...") }}
         </div>
 
         {{ create_error_message(form.map_url) }}
 
         <div class="input-group mb-3">
-            <label class="input-group-text" for="coffee_price">{{ form.coffee_price.label }}</label>
+            <label class="d-block text-center input-group-text col-3 col-md-2" for="coffee_price">{{ form.coffee_price.label }}</label>
             {{ create_input(form_item=form.coffee_price, placeholder="e.g.: £2.80") }}
         </div>
 
         {{ create_error_message(form.coffee_price) }}
 
         <div class="input-group mb-3">
-            <label class="input-group-text" for="seats">{{ form.seats.label }}</label>
+            <label class="d-block text-center input-group-text col-3 col-md-2" for="seats">{{ form.seats.label }}</label>
             {{ form.seats(class_="form-select") }}
         </div>
 

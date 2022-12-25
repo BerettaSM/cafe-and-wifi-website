@@ -24,7 +24,7 @@
 
 {% block content %}
 
-    {% if pagination.total > 0 %}
+    {% if pagination and pagination.total > 0 %}
 
         <div class="d-flex justify-content-between align-items-center mb-3">
 
@@ -177,21 +177,32 @@
 
     {% else %}
 
-        <div class="d-flex flex-column justify-content-between align-items-center mb-3">
+        <div class="d-flex flex-column justify-content-between mb-3">
 
-            <h4 class="text-center text-muted">
                 {% if search_term and search_term != '' %}
-                    No results were found for "{{ search_term }}".
-                {% else %}
-                    There are no entries to display.
-                {% endif %}
-            </h4>
 
-            <a href="{{ url_for('views.home') }}" class="mt-5">
-                <button
-                    class="btn btn-outline-dark"
-                >Return to home</button>
-            </a>
+                    <h4 class="text-center text-muted">
+                        No results were found for "{{ search_term }}".
+                    </h4>
+
+                    <form class="d-flex mt-5" action="{{ url_for('views.search_for') }}">
+                        <input class="form-control me-3" type="search" placeholder="Search for something else" name="search_term">
+                        <button class="btn btn-dark col-3 col-md-2" type="submit">Search</button>
+                    </form>
+
+                    <a href="{{ url_for('views.home') }}" class="mt-5">
+                        <button
+                            class="btn btn-outline-dark"
+                        >Return to home</button>
+                    </a>
+
+                {% else %}
+
+                    <h4 class="text-center text-muted mt-5">
+                        There are no entries to display.
+                    </h4>
+
+                {% endif %}
 
         </div>
 

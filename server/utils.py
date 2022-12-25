@@ -1,10 +1,10 @@
-import sys
 import inspect
-import datetime
+import sys
+from datetime import datetime
 
 
 def formatted_timestamp():
-    return datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    return datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
 
 def to_bool(yes_no: str) -> bool:

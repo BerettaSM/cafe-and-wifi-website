@@ -1,12 +1,11 @@
 from flask import Blueprint, render_template, request, redirect, url_for, flash
 from flask_login import login_user
+from sqlalchemy import asc, or_
 
 from . import db
+from .custom_decorators import admin_only, anonymous_only
 from .forms import CafeForm, UserForm, CommentForm
 from .models import Cafe, User, Comment
-from sqlalchemy import desc, asc, or_
-
-from .custom_decorators import admin_only, anonymous_only
 
 
 views = Blueprint('views', __name__)
@@ -41,8 +40,6 @@ def search_for():
 @views.route('/cafe-view/<int:cafe_id>', methods=('GET',))
 def view_cafe(cafe_id):
     cafe = Cafe.query.get(cafe_id)
-    # cafe = db.session.execute(db.select(Cafe).filter_by(id=cafe_id))
-    # cafe.comments.order_by(desc(Comment.comment_author.username))
     form = CommentForm()
     return render_template('cafe_view.html', cafe=cafe, form=form)
 
@@ -92,6 +89,6 @@ def sign_up():
         db.session.add(new_user)
         db.session.commit()
         login_user(new_user)
-        flash(f'Welcome {new_user.username}.', category='success')
+        flash(f'Welcome, {new_user.username}.', category='success')
         return redirect(url_for('views.home'))
     return render_template('sign-up-view.html', form=form)

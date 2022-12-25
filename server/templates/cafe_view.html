@@ -16,6 +16,10 @@
         referrerpolicy="no-referrer"
     />
 
+    <script type="module">
+        import { triggerDelete } from '{{ url_for('static', filename='js/lib.js') }}';
+    </script>
+
 {% endblock %}
 
 {% block style %}
@@ -23,6 +27,11 @@
     {
         background: #fff url({{ cafe.img_url }}) no-repeat center center;
         background-size: cover;
+    }
+    .send-button:hover
+    {
+        color: green;
+        transition: all .3s;
     }
 {% endblock %}
 
@@ -40,10 +49,16 @@
                         <h1 class="fs-3">{{ cafe.name }}</h1>
                         <p class="fs-5">{{ cafe.location }}</p>
                     </div>
+                    <!--
+                    <a href="{{ url_for('views.delete_cafe', cafe_id=cafe.id) }}"></a>
+                    -->
 
-                    <a href="{{ url_for('views.delete_cafe', cafe_id=cafe.id) }}">
-                        <button type="button" class="btn btn-danger del-button h-100 p-0" id="del-button">Delete</button>
-                    </a>
+                    <button
+                        type="button"
+                        class="btn btn-danger del-button m-0"
+                        id="delete-cafe-button"
+                        data-confirm-url="{{ url_for('views.delete_cafe', cafe_id=cafe.id) }}"
+                    >Delete</button>
 
                     <a href="{{ url_for('views.edit_cafe', cafe_id=cafe.id) }}">
                         <button type="button" class="btn btn-secondary edit-button h-100 p-0">Edit</button>
@@ -65,7 +80,7 @@
                 <div class="me-4">
 
                     <a href="{{ cafe.map_url }}" target="_blank">
-                        <button type="button" class="btn btn-lg btn-outline-dark text-nowrap">View on Map</button>
+                        <button type="button" class="btn btn-lg btn-outline-dark">View on Map</button>
                     </a>
 
                 </div>
@@ -118,7 +133,7 @@
 
                         <div class="input-group mb-3">
                             {{ form.text(class_="form-control", placeholder=placeholder) }}
-                            {{ form.send(class_='input-group-text') }}
+                            {{ form.send(class_='input-group-text send-button') }}
                         </div>
 
                     </form>
@@ -149,16 +164,18 @@
 
                 {% endif %}
 
-                {% if cafe.comments %}
+                <div id="comments">
 
-                        <div id="comments">
+                    {% if cafe.comments %}
 
-                    {% for comment in cafe.comments %}
+                        {% for comment in cafe.comments %}
 
                             <div class="comment position-relative card mb-3">
 
                                 <div class="timestamp d-none">
+
                                     {{ comment.timestamp_create }}
+
                                 </div>
 
                                 <div class="d-flex flex-row g-0">
@@ -193,26 +210,32 @@
 
                                 </div>
 
-                                {% if current_user.is_authenticated and current_user.id == comment.author_id %}
-                                    <a
-                                        class="position-absolute top-0 end-0 text-danger del-button del-icon"
-                                        href="{{ url_for('comments.delete_comment', comment_id=comment.id) }}"
-                                    >
-                                        <i class="fa-solid fa-trash"></i>
-                                    </a>
+                                {% if current_user.is_authenticated and (current_user.id == comment.author_id or current_user.has_admin_privileges) %}
+
+                                        <span
+                                            class="fa-solid fa-trash position-absolute top-0 end-0 text-danger del-button del-icon"
+                                            data-confirm-url="{{ url_for('comments.delete_comment', comment_id=comment.id) }}"
+                                        ></span>
+
                                 {% endif %}
                             </div>
 
-                    {% endfor %}
+                        {% endfor %}
 
-                    </div>
+                    {% else %}
 
-                {% endif %}
+                        <h5 class="text-muted text-center my-5 py-1">This cafe doesn't have any comments yet.</h5>
+
+                    {% endif %}
+
+                </div>
 
             </div>
 
         </div>
 
     {% endif %}
+
+    {% include 'modal_confirm.html' %}
 
 {% endblock %}

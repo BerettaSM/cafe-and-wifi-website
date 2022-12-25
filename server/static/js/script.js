@@ -1,4 +1,4 @@
-import { convertTimestampToElapsedTime } from './lib.js';
+import { convertTimestampToElapsedTime, triggerDeleteConfirmation } from './lib.js';
 
 document.addEventListener('DOMContentLoaded', () => {
 
@@ -35,7 +35,10 @@ document.addEventListener('DOMContentLoaded', () => {
                     This is meant to remove the divs that contain
                     error messages.
                 */
-                document.getElementById(`${e.target.id}-error`).remove();
+
+                const errorSection = document.getElementById(`${e.target.id}-error`);
+
+                if(errorSection !== null) errorSection.remove();
 
             });
 
@@ -55,7 +58,9 @@ document.addEventListener('DOMContentLoaded', () => {
         loginButton.addEventListener('click', e => {
 
             const offCanvas = document.getElementById('offcanvas-navbar');
+
             const openedOffCanvas = bootstrap.Offcanvas.getInstance(offCanvas);
+
             openedOffCanvas.hide();
 
         });
@@ -74,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             button.addEventListener('click', (e) => {
 
-                if(!window.confirm('Are you sure you want to delete?')) e.preventDefault();
+                triggerDeleteConfirmation(e.target);
 
             });
 
@@ -106,7 +111,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             updateElapsedTime();
 
-        }, 1000);
+        }, 60000);
 
         updateElapsedTime();
 
