@@ -22,6 +22,10 @@ valid_username_length = Length(min=4, message='Must have a minimum length of 4 c
 valid_password_length = Length(min=8, message='Must have a minimum length of 8 characters.')
 comment_text_length = Length(max=2000, message='Must have a maximum length of 2000 characters.')
 formatted_price = Regexp(regex=value_regex, message='Must be properly formatted. e.g.: £2.80')
+
+
+def equal_passwords(field):
+    return EqualTo(field, message='Passwords must match!')
 # ---------------
 
 
@@ -92,11 +96,11 @@ class CafeForm(BaseForm):
 class UserForm(BaseForm):
     signup_email = EmailField('Email', validators=[not_null, valid_email, unique_email])
     signup_username = StringField('Username', validators=[not_null, valid_username_length, unique_username])
-    signup_password = PasswordField('New Password', validators=[
-        not_null, valid_password_length, EqualTo('signup_confirm', message='Passwords must match!')
+    signup_password = PasswordField('Password', validators=[
+        not_null, valid_password_length, equal_passwords('signup_confirm')
     ])
-    signup_confirm = PasswordField('Repeat password', validators=[
-        not_null, valid_password_length, EqualTo('signup_password', message='Passwords must match!')
+    signup_confirm = PasswordField('Confirm', validators=[
+        not_null, valid_password_length, equal_passwords('signup_password')
     ])
     submit = SubmitField('Sign-Up')
 

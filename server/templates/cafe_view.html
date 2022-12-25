@@ -6,32 +6,11 @@
 
 {% endblock %}
 
-{% block scripts_and_links %}
-
-    <link
-        rel="stylesheet"
-        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
-        integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
-        crossorigin="anonymous"
-        referrerpolicy="no-referrer"
-    />
-
-    <script type="module">
-        import { triggerDelete } from '{{ url_for('static', filename='js/lib.js') }}';
-    </script>
-
-{% endblock %}
-
 {% block style %}
     .cafe-header
     {
         background: #fff url({{ cafe.img_url }}) no-repeat center center;
         background-size: cover;
-    }
-    .send-button:hover
-    {
-        color: green;
-        transition: all .3s;
     }
 {% endblock %}
 
@@ -45,20 +24,18 @@
 
                 {% if current_user.is_authenticated and current_user.has_admin_privileges %}
 
-                    <div class="text-bg-dark w-100 rounded-start">
-                        <h1 class="fs-3">{{ cafe.name }}</h1>
-                        <p class="fs-5">{{ cafe.location }}</p>
+                    <div class="text-bg-dark w-100 rounded-start cursive">
+                        <h1 class="fs-1">{{ cafe.name }}</h1>
+                        <p class="fs-2">{{ cafe.location }}</p>
                     </div>
-                    <!--
-                    <a href="{{ url_for('views.delete_cafe', cafe_id=cafe.id) }}"></a>
-                    -->
 
                     <button
                         type="button"
-                        class="btn btn-danger del-button m-0"
+                        class="btn btn-danger del-button d-flex justify-content-center align-items-center"
                         id="delete-cafe-button"
                         data-confirm-url="{{ url_for('views.delete_cafe', cafe_id=cafe.id) }}"
-                    >Delete</button>
+                    >Delete
+                    </button>
 
                     <a href="{{ url_for('views.edit_cafe', cafe_id=cafe.id) }}">
                         <button type="button" class="btn btn-secondary edit-button h-100 p-0">Edit</button>
@@ -66,9 +43,9 @@
 
                 {% else %}
 
-                    <div class="text-bg-dark w-100 rounded">
-                        <h1 class="fs-3">{{ cafe.name }}</h1>
-                        <p class="fs-5">{{ cafe.location }}</p>
+                    <div class="text-bg-dark w-100 rounded cursive">
+                        <h1 class="fs-1">{{ cafe.name }}</h1>
+                        <p class="fs-2">{{ cafe.location }}</p>
                     </div>
 
                 {% endif %}
@@ -132,7 +109,7 @@
                         {{ form.csrf_token }}
 
                         <div class="input-group mb-3">
-                            {{ form.text(class_="form-control", placeholder=placeholder) }}
+                            {{ form.text(class_="form-control", placeholder=form.text.label.text) }}
                             {{ form.send(class_='input-group-text send-button') }}
                         </div>
 
@@ -142,23 +119,23 @@
 
                     <div class="text-center mb-3">
 
-                        <p>
+                        <p class="fs-4 text-muted">
                             You need to be logged in to comment.
                         </p>
 
-                        <p>
-                            You can
-                            <a
-                                href="#"
+                        <div class="d-flex flex-row justify-content-evenly mt-4">
+                             <button
+                                class="btn btn-dark mb-3 col-3"
+                                id="login-button"
                                 data-bs-toggle="modal"
                                 data-bs-target="#login-modal"
-                            >log in here</a>.
-                        </p>
-
-                        <p>
-                            Or, you can
-                            <a href="{{ url_for('views.sign_up') }}">sign up here</a>.
-                        </p>
+                            >Login</button>
+                            <a href="{{ url_for('views.sign_up') }}" class="mb-3 col-3">
+                                <button
+                                    class="btn btn-outline-dark w-100"
+                                >Sign-Up</button>
+                            </a>
+                        </div>
 
                     </div>
 

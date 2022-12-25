@@ -28,6 +28,6 @@ def login():
 @auth.route('/logout', methods=('GET',))
 @login_required
 def logout():
-    flash(f'Goodbye, {current_user.username}')
+    flash(f'Goodbye, {current_user.username}.')
     logout_user()
     return redirect(url_for('views.home'))

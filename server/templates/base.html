@@ -13,11 +13,20 @@
         integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65"
         crossorigin="anonymous"
     >
+
     <script
         src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
         integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4"
         crossorigin="anonymous"
     ></script>
+
+    <link
+        rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.1/css/all.min.css"
+        integrity="sha512-MV7K8+y+gLIBoVD59lQIYicR65iaqukzvf/nwasF0nqhPay5w/9lJmVM2hMDcnK1OnMGCdVK+iQrJ7lzPJQd1w=="
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"
+    />
 
     <script defer type="module" src="{{ url_for('static', filename='js/script.js') }}"></script>
 
@@ -26,9 +35,11 @@
         showServerMessages();
     </script>
 
-    {% block scripts_and_links %}{% endblock %}
-
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+
+    <link rel="shortcut icon" href="{{ url_for('static', filename='images/coffee_logo.ico') }}" type="image/x-icon">
+
+    {% block scripts_and_links %}{% endblock %}
 
     <style>
         {% block style %}{% endblock %}
@@ -39,22 +50,29 @@
 
     {% block navbar %}
 
-        <nav class="navbar bg-light fixed-top">
+        <nav class="navbar bg-dark fixed-top">
 
             <div class="container-fluid">
 
-                <a class="navbar-brand" href="{{ url_for('views.home') }}">
-                    Cafe & Wifi
+                <a class="navbar-brand m-2 p-3 d-flex align-items-center" href="{{ url_for('views.home') }}">
+
+                    <img
+                        src="{{ url_for('static', filename='images/coffee_logo.png') }}"
+                        class="logo"
+                    >
+
+                    <h1 class="d-inline-block text-light cursive fs-1 ms-3 my-0">Cafe & Wifi</h1>
+
                 </a>
 
-                <button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas-navbar" aria-controls="offcanvas-navbar">
-                    <span class="navbar-toggler-icon"></span>
+                <button class="navbar-toggler text-light cursive fs-2" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvas-navbar" aria-controls="offcanvas-navbar">
+                    Menu
                 </button>
 
                 <div class="offcanvas offcanvas-end" tabindex="-1" id="offcanvas-navbar" aria-labelledby="offcanvas-navbar-label">
 
                     <div class="offcanvas-header">
-                        <h5 class="offcanvas-title" id="offcanvas-navbar-label">
+                        <h5 class="offcanvas-title cursive fs-1" id="offcanvas-navbar-label">
                             Menu
                         </h5>
                         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
@@ -124,10 +142,46 @@
 
     {% endblock %}
 
-    <main class="main-content container">
+    <main class="main-content container d-flex flex-column min-vh-100">
         {% block content %}
         {% endblock %}
     </main>
+
+    <footer class="py-3 container-fluid shadow-lg mt-auto">
+
+        <ul class="nav justify-content-center border-bottom p-3 mb-3">
+
+            <li class="mx-3">
+                <a class="link-dark" href="https://github.com/BerettaSM" target="_blank">
+                    <span class="fa-brands fa-github fa-2x"></span>
+                </a>
+            </li>
+
+            <li class="mx-3">
+                <a class="link-dark" href="#">
+                    <span class="fa-brands fa-twitter fa-2x"></span>
+                </a>
+            </li>
+
+            <li class="mx-3">
+                <a class="link-dark" href="#">
+                    <span class="fa-brands fa-instagram fa-2x"></span>
+                </a>
+            </li>
+
+            <li class="mx-3">
+                <a class="link-dark" href="#">
+                    <span class="fa-brands fa-facebook fa-2x"></span>
+                </a>
+            </li>
+
+        </ul>
+
+        <p class="text-center text-muted">© <span id="current-year"></span>. All rights reserved.</p>
+        <p class="text-center text-muted">Website by <a class="link-dark" href="https://github.com/BerettaSM" target="_blank">Ramon Saviato</a>.</p>
+        <p class="text-center text-muted">Image by <a class="link-dark" href="https://www.freepik.com/free-vector/flat-design-cafe-signage_22856765.htm#query=coffee%20icon&position=6&from_view=keyword">Freepik</a>.</p>
+
+    </footer>
 
     {% if not current_user.is_authenticated %}
 
@@ -152,4 +206,5 @@
     {% endwith %}
 
 </body>
+
 </html>

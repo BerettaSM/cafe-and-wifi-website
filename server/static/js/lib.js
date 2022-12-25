@@ -125,7 +125,7 @@ export function triggerDeleteConfirmation(htmlElement) {
 
     const confirmAnchor = confirmationModalElement.querySelector('a.confirm-endpoint-url');
 
-    modalHeader.innerText = 'Are you you want to delete?';
+    modalHeader.innerText = 'Are you sure you want to delete?';
 
     modalBody.innerText = 'This action cannot be undone.';
 
@@ -141,8 +141,4 @@ export function triggerDeleteConfirmation(htmlElement) {
 
     confirmationModalInstance.show();
 
-}
-
-export function test() {
-    alert('oi');
 }

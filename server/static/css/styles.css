@@ -1,3 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Beau+Rivage&display=swap');
+
+body,
+html
+{
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+}
+
+.cursive
+{
+    font-family: 'Beau Rivage', cursive;
+}
+
 .btn
 {
     transition: all .7s;
@@ -45,17 +58,41 @@
 .del-icon
 {
     cursor: pointer;
-    transform: translate(-60%, 30%);
+    transform: translate(-60%, 60%);
+}
+
+.form-control:focus, .form-select:focus {
+  border-color: #000000;
+  box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075), 0 0 8px rgba(0, 0, 0, 0.6);
+}
+
+.list-group span
+{
+    vertical-align: middle;
+    line-height: 30px;
+}
+
+.logo
+{
+    width: 50px;
 }
 
 .main-content
 {
-    padding-top: 75px;
+    padding-top: 150px;
 }
 
-.page-navigation-button
+.navbar-toggler:hover {
+    text-decoration: none;
+    outline: 0;
+    box-shadow: 0 0 0 var(--bs-navbar-toggler-focus-width);
+    transition: all .5s;
+}
+
+.send-button:hover
 {
-    width: 7rem;
+    color: green;
+    transition: all .3s;
 }
 
 .side-img
@@ -84,16 +121,24 @@
 
 @media only screen and (max-width: 768px)
 {
-    /*
-        Disables pagination's inner numbers on small screen devices.
-    */
-    .page-item-inner
-    {
-        display: none;
-    }
 
     .card-img-top
     {
         height: 20vh;
     }
+
+    .error-img
+    {
+        width: 75%;
+    }
+
+    /*
+        Disables pagination's inner numbers on small screen devices.
+    */
+
+    .page-item-inner
+    {
+        display: none;
+    }
+
 }

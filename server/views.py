@@ -1,11 +1,11 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash
+from flask import Blueprint, flash, render_template, request, redirect, url_for
 from flask_login import login_user
 from sqlalchemy import asc, or_
 
 from . import db
 from .custom_decorators import admin_only, anonymous_only
-from .forms import CafeForm, UserForm, CommentForm
-from .models import Cafe, User, Comment
+from .forms import CafeForm, CommentForm, UserForm
+from .models import Cafe, Comment, User
 
 
 views = Blueprint('views', __name__)

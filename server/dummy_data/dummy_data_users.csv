@@ -1,0 +1,15 @@
+email,username,password,has_admin_privileges
+admin@email.com,Admin,12345678,True
+john_doe@email.com,John Doe,12345678,False
+jane_doe@email.com,Jane Doe,12345678,False
+sandra_bullock@email.com,Sandra Bullock,12345678,False
+sam_smith@email.com,Sam Smith,12345678,False
+jennifer_lawrence@email.com,Jennifer Lawrence,12345678,False
+john_smith@email.com,John Smith,12345678,False
+anne_washington@email.com,Anne Washington,12345678,False
+norman_reedus@email.com,Norman Reedus,12345678,False
+ferdinand@email.com,Ferdinand,12345678,False
+jules_vioux@email.com,Jules Vioux,12345678,False
+clinton_masterson@email.com,Clinton Masterson,12345678,False
+hugh_mcdonald@email.com,Hugh McDonald,12345678,False
+christine_bleu@email.com,Christine Bleu,12345678,False

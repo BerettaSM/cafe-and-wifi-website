@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+
+{% block title %}
+
+    Forbidden - Cafe & Wifi
+
+{% endblock %}
+
+{% block content %}
+
+    <h3 class="text-muted text-center my-5">403 - You don't have the clearance to perform that action.</h3>
+
+    <img
+        src="https://media3.giphy.com/media/IhTiayfdVYdgs/giphy.gif?cid=790b7611676f455ecf4f341bcccabc0cd2e44d6ab949ee76"
+        alt="Encino Man Meme"
+        class="d-block rounded-circle mx-auto shadow-lg error-img"
+    >
+
+    <a href="{{ url_for('views.home') }}" class="d-block mt-5 text-center">
+        <button
+            class="btn btn-outline-dark"
+        >Return to home</button>
+    </a>
+
+{% endblock %}
