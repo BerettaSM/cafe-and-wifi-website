@@ -4,7 +4,8 @@ from datetime import datetime
 
 
 def formatted_timestamp():
-    return datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    # return datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+    return str(datetime.utcnow())
 
 
 def to_bool(yes_no: str) -> bool:
