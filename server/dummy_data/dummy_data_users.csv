@@ -1,5 +1,5 @@
 email,username,password,has_admin_privileges
-admin@email.com,Admin,12345678,True
+admin@email.com,Admin,z8m4nyuq,True
 john_doe@email.com,John Doe,12345678,False
 jane_doe@email.com,Jane Doe,12345678,False
 sandra_bullock@email.com,Sandra Bullock,12345678,False

@@ -1,10 +1,12 @@
 export function convertTimestampToElapsedTime(timestampString){
 
     /*
-        timestampString should be formatted as: "2022-12-24 12:48:53" -> "year-month-day hour:minute:second"
+        timestampString should be formatted as: "2022-12-24 12:48:53.876933" -> "year-month-day hour:minute:second"
+
+        Datetime is stored as UTC on the database.
     */
 
-    const timestamp = new Date(timestampString.trim());
+    const timestamp = new Date(`${timestampString.trim()} UTC`);
 
     const elapsedTime = new Date() - timestamp;
 
